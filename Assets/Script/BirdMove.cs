@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class BirdMove : MonoBehaviour
 {
-    private Rigidbody2D Rigidbody;
+    Rigidbody2D Rigidbody;
+
+    new SpriteRenderer renderer;
+
+    Animator animator;
 
     public float movePower = 1f;
 
@@ -17,6 +21,8 @@ public class BirdMove : MonoBehaviour
     void Start()
     {
         Rigidbody = GetComponent<Rigidbody2D>();
+        renderer = GetComponent<SpriteRenderer>();
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -45,10 +51,14 @@ public class BirdMove : MonoBehaviour
         if (Input.GetAxisRaw("Horizontal2") < 0)
         {
             moveVelocity = Vector3.left;
+
+            renderer.flipX = true;
         }
         else if (Input.GetAxisRaw("Horizontal2") > 0)
         {
             moveVelocity = Vector3.right;
+
+            renderer.flipX = false;
         }
 
         transform.position += moveVelocity * movePower * Time.deltaTime;
@@ -68,7 +78,7 @@ public class BirdMove : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Ground"))
+        if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Player"))
         {
             isGround = true;
             Rigidbody.drag = 0;
