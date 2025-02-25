@@ -68,6 +68,8 @@ public class BearMove : MonoBehaviour
             //Vector2 jumpVelocity = new Vector2(0, jumpPower);
             Rigidbody.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
 
+            animator.SetBool("isJumping", true);
+            animator.SetTrigger("doJumping");
             isGround = false;
         }
         
@@ -79,5 +81,11 @@ public class BearMove : MonoBehaviour
             isGround = true;
         }
     }
-
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            animator.SetBool("isJumping", false);
+        }
+    }
 }
