@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BearMove : MonoBehaviour
@@ -11,10 +9,13 @@ public class BearMove : MonoBehaviour
     Animator animator;
 
     public float movePower = 1f;
-    
+
     public float jumpPower = 1f;
 
     private bool isGround = false;
+
+    public bool attack = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -27,6 +28,7 @@ public class BearMove : MonoBehaviour
     void Update()
     {
         Jump();
+        Break();
     }
 
     void FixedUpdate()
@@ -36,34 +38,36 @@ public class BearMove : MonoBehaviour
 
     private void Move()
     {
-        Vector3 moveVelocity = Vector3.zero;
-
         if (Input.GetAxisRaw("Horizontal1") < 0)
         {
-            moveVelocity = Vector3.left;
+            Rigidbody.AddForce(Vector2.left * movePower, ForceMode2D.Impulse);
+            Rigidbody.velocity = new Vector2(Mathf.Max(Rigidbody.velocity.x, -movePower), Rigidbody.velocity.y);
 
             renderer.flipX = true;
-            animator.SetBool("isMoving",true);
+            animator.SetBool("isMoving", true);
         }
         else if (Input.GetAxisRaw("Horizontal1") > 0)
         {
-            moveVelocity = Vector3.right;
+            Rigidbody.AddForce(Vector2.right * movePower, ForceMode2D.Impulse);
+            Rigidbody.velocity = new Vector2(Mathf.Min(Rigidbody.velocity.x, movePower), Rigidbody.velocity.y);
 
             renderer.flipX = false;
             animator.SetBool("isMoving", true);
         }
         else
         {
+            Vector3 vel = Rigidbody.velocity;
+            vel.x = 0;
+            Rigidbody.velocity = vel;
             animator.SetBool("isMoving", false);
         }
 
-        transform.position += moveVelocity * movePower * Time.deltaTime;
     }
     private void Jump()
     {
         if (Input.GetButtonDown("Jump1") && isGround)
-        { 
-           // Rigidbody.velocity = Vector2.zero;
+        {
+            // Rigidbody.velocity = Vector2.zero;
 
             //Vector2 jumpVelocity = new Vector2(0, jumpPower);
             Rigidbody.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
@@ -72,20 +76,42 @@ public class BearMove : MonoBehaviour
             animator.SetTrigger("doJumping");
             isGround = false;
         }
-        
+
+    }
+    private void Break()
+    {
+        if (Input.GetButtonDown("Break1"))
+        {
+            attack = true;
+            Invoke("EndAttack", 0.5f);
+        }
+        else if (Input.GetButtonUp("Break1"))
+        {
+            attack = false;
+        }
+    }
+    void EndAttack()
+    {
+        attack = false;
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            isGround = true;
-        }
+        isGround = true;
+
+        //if (collision.gameObject.CompareTag("Ground"))
+        //{
+        //    isGround = true;
+        //}
     }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            animator.SetBool("isJumping", false);
-        }
+
+        animator.SetBool("isJumping", false);
+        //if (collision.gameObject.CompareTag("Ground"))
+        //{
+        //    animator.SetBool("isJumping", false);
+        //}
+
     }
 }

@@ -17,6 +17,8 @@ public class BirdMove : MonoBehaviour
     public float glideDrag = 1f;
 
     private bool isGround = false;
+
+    public bool hold = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -28,6 +30,7 @@ public class BirdMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Hold();
         Jump();
         Move();
     }
@@ -50,15 +53,26 @@ public class BirdMove : MonoBehaviour
 
         if (Input.GetAxisRaw("Horizontal2") < 0)
         {
-            moveVelocity = Vector3.left;
+            Rigidbody.AddForce(Vector2.left * movePower, ForceMode2D.Impulse);
+            Rigidbody.velocity = new Vector2(Mathf.Max(Rigidbody.velocity.x, -movePower), Rigidbody.velocity.y);
 
             renderer.flipX = true;
+            //animator.SetBool("isMoving", true);
         }
         else if (Input.GetAxisRaw("Horizontal2") > 0)
         {
-            moveVelocity = Vector3.right;
+            Rigidbody.AddForce(Vector2.right * movePower, ForceMode2D.Impulse);
+            Rigidbody.velocity = new Vector2(Mathf.Min(Rigidbody.velocity.x, movePower), Rigidbody.velocity.y);
 
             renderer.flipX = false;
+            //animator.SetBool("isMoving", true);
+        }
+        else
+        {
+            Vector3 vel = Rigidbody.velocity;
+            vel.x = 0;
+            Rigidbody.velocity = vel;
+            //animator.SetBool("isMoving", false);
         }
 
         transform.position += moveVelocity * movePower * Time.deltaTime;
@@ -76,12 +90,44 @@ public class BirdMove : MonoBehaviour
         }
 
     }
+    private void Hold()
+    {
+        if (Input.GetButtonDown("Hold2"))
+        {
+            if (hold)
+            {
+                hold = false;
+            }
+            else if (!hold)
+            {
+                hold = true;
+            }
+                
+        }
+    }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Player"))
+        isGround = true;
+        Rigidbody.drag = 0;
+        //if (collision.gameObject.CompareTag("Box") || collision.gameObject.CompareTag("Stone"))
+        //{
+        //    collision.rigidbody.bodyType = RigidbodyType2D.Kinematic;
+        //}
+        //if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Player"))
+        //{
+        //    isGround = true;
+        //    Rigidbody.drag = 0;
+        //}
+        if (collision.gameObject.CompareTag("Box") || collision.gameObject.CompareTag("Stone"))
         {
-            isGround = true;
-            Rigidbody.drag = 0;
+            collision.rigidbody.constraints = RigidbodyConstraints2D.FreezePosition;
+        }
+    }
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Box") || collision.gameObject.CompareTag("Stone"))
+        {
+            collision.rigidbody.constraints = RigidbodyConstraints2D.None;
         }
     }
 }

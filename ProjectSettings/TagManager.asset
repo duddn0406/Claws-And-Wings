@@ -5,6 +5,10 @@ TagManager:
   serializedVersion: 2
   tags:
   - Ground
+  - Box
+  - Stone
+  - Bearhand
+  - Birdhand
   layers:
   - Default
   - TransparentFX
