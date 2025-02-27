@@ -16,12 +16,17 @@ public class BearMove : MonoBehaviour
 
     public bool attack = false;
 
+    //private bool isPushing = false;
+
+    GameObject BearHand;
+
     // Start is called before the first frame update
     void Start()
     {
         Rigidbody = GetComponent<Rigidbody2D>();
         renderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
+        BearHand = transform.GetChild(0).gameObject;
     }
 
     // Update is called once per frame
@@ -97,7 +102,6 @@ public class BearMove : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         isGround = true;
-
         //if (collision.gameObject.CompareTag("Ground"))
         //{
         //    isGround = true;
@@ -108,6 +112,7 @@ public class BearMove : MonoBehaviour
     {
 
         animator.SetBool("isJumping", false);
+
         //if (collision.gameObject.CompareTag("Ground"))
         //{
         //    animator.SetBool("isJumping", false);
