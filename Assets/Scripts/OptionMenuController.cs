@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 
 public class OptionMenuController : MonoBehaviour
@@ -6,9 +7,12 @@ public class OptionMenuController : MonoBehaviour
     public GameObject previousUI;
     [SerializeField] private CanvasGroup canvasGroup; // ✅ 캔버스 투명도 조절
 
-    public void ToggleOptionMenu()
+    public void OnOptionButtonPressed()
     {
-        optionMenu.SetActive(!optionMenu.activeSelf); // 옵션 메뉴 열기/닫기
+        optionMenu.SetActive(true);
+        // 게임 시간을 멈춤 (0이면 정지, 1이면 정상 진행)
+        Time.timeScale = 0f;
+        Debug.Log("옵션 메뉴 열림, 게임 정지");
 
         if (canvasGroup != null)
         {
@@ -28,6 +32,18 @@ public class OptionMenuController : MonoBehaviour
         }
 
         optionMenu.SetActive(false); // ✅ 세이브 버튼을 눌러야 옵션 메뉴가 꺼짐
-        previousUI.SetActive(true);
+
+        if (previousUI != null)
+        {
+            previousUI.SetActive(true);
+        }
+        else
+        {
+            Debug.LogWarning("previousUI가 할당되지 않음!");
+        }
+
+        Time.timeScale = 1f;
+        Debug.Log("옵션 메뉴 닫힘, 게임 재개");
     }
+
 }
