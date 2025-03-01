@@ -20,6 +20,7 @@ public class BirdMove : MonoBehaviour
 
     public float glideDrag = 1f;
 
+    private bool isBox = false;
     //private bool isGround = false;
 
     public bool hold = false;
@@ -110,7 +111,7 @@ public class BirdMove : MonoBehaviour
             {
                 hold = false;
             }
-            else if (!hold)
+            else if (!hold && isBox)
             {
                 hold = true;
             }
@@ -141,6 +142,20 @@ public class BirdMove : MonoBehaviour
         if (collision.gameObject.CompareTag("Box") || collision.gameObject.CompareTag("Stone"))
         {
             collision.rigidbody.constraints = RigidbodyConstraints2D.None;
+        }
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Box"))
+        {
+            isBox = true;
+        }
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Box"))
+        {
+            isBox = false;
         }
     }
 }

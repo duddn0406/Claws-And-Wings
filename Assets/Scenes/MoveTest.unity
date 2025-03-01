@@ -130,6 +130,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1778441986865043845, guid: 1d8f16d1e9914ce44a952ed1e52e6fb0, type: 3}
+      propertyPath: m_SortingOrder
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 1875092968452078812, guid: 1d8f16d1e9914ce44a952ed1e52e6fb0, type: 3}
       propertyPath: m_Name
       value: Stone (3)
@@ -243,7 +247,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.7474785, y: -6.8909607}
+  m_Offset: {x: -0.6187935, y: -5.795637}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -254,7 +258,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 3.5416641, y: 4.9481964}
+  m_Size: {x: 1.0840302, y: 4.2505827}
   m_EdgeRadius: 0
 --- !u!1001 &182616261
 PrefabInstance:
@@ -757,7 +761,7 @@ Transform:
   m_GameObject: {fileID: 376199512}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -37.2, y: -14.8, z: 0}
+  m_LocalPosition: {x: -38.3, y: -4.9, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -822,7 +826,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
+  m_LinearDrag: 16
   m_AngularDrag: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
@@ -848,8 +852,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85e1c8a5aae7e6146b49fd02c28ec705, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movePower: 30
-  jumpPower: 40
+  movePower: 1
+  MaxSpeed: 10
+  jumpPower: 1
   glideDrag: 25
   hold: 0
 --- !u!95 &376199518
