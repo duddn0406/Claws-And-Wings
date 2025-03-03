@@ -88,6 +88,7 @@ public class BearMove : MonoBehaviour
         if (Input.GetButtonDown("Break1"))
         {
             attack = true;
+            animator.SetTrigger("doBreak");
             Invoke("EndAttack", 0.5f);
         }
         else if (Input.GetButtonUp("Break1"))
